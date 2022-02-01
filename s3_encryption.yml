@@ -1,0 +1,18 @@
+policies:
+  - name: s3-set-bucket-encryption-cloud-trail2
+    resource: s3
+    mode:
+      type: cloudtrail
+      role: custodian-aaron-test
+      events:
+        - source: 's3.amazonaws.com'
+          event: 'CreateBucket'
+          ids: 'requestParameters.bucketName'
+    filters:
+      - type: bucket-encryption
+        state: False
+      - tag:aaronTest: present
+    actions:
+      - type: set-bucket-encryption
+        crypto: AES256
+        enabled: True
